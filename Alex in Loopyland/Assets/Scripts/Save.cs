@@ -68,45 +68,88 @@ namespace Capstone
 
     public class Load : StreamReader{
 
+        public ArrayList textData = new ArrayList();
+        
         public Load(string path) : base(path){
-            StreamReader f = new StreamReader("fsdf");
-               
+            string currentLine = ReadLine();
+            while(currentLine != null){
+                textData.Add(currentLine);
+                currentLine = ReadLine();
+            }
         }
 
         // get data
-        public void getElement(string category, string name, int defaultValue){
+        public int getElement(string category, string name, int defaultValue){
             string valueSpot = " " + category + " : " + name + " : ";
-            int data = defaultValue;
-            
-            string currentLine = ReadLine();
-            string wantedLine;
-            while(currentLine != null){
-                if(currentLine.Contains(valueSpot)){
-                    wantedLine = currentLine;
+            string wantedLine = null;
+
+            foreach(string line in textData){
+                if(line.Contains(valueSpot)){
+                    wantedLine = line;
                 }
             }
-            BaseStream = 0;
 
             if(wantedLine != null){
-                // convert string to int later TODO
-                data = wantedLine.Substring(valueSpot.Length() -1);
+                string dataString = wantedLine.Substring(valueSpot.Length - 1);
+                return int.Parse(dataString);
+            }
+            
+            return defaultValue;
+        }
+
+        public double getElement(string category, string name, double defaultValue){
+            string valueSpot = " " + category + " : " + name + " : ";
+            string wantedLine = null;
+
+            foreach(string line in textData){
+                if(line.Contains(valueSpot)){
+                    wantedLine = line;
+                }
             }
 
-            return data;
+            if(wantedLine != null){
+                string dataString = wantedLine.Substring(valueSpot.Length - 1);
+                return double.Parse(dataString);
+            }
+            
+            return defaultValue;
         }
 
-        public void getElement(string category, string name, double value){
-            ReadLine();
-        }
-
-        public void getElement(string category, string name, string value){
+        public string getElement(string category, string name, string defaultValue){
             string valueSpot = " " + category + " : " + name + " : ";
-            ReadLine(valueSpot + value);
+            string wantedLine = null;
+
+            foreach(string line in textData){
+                if(line.Contains(valueSpot)){
+                    wantedLine = line;
+                }
+            }
+
+            if(wantedLine != null){
+                string dataString = wantedLine.Substring(valueSpot.Length - 1);
+                return dataString;
+            }
+            
+            return defaultValue;
         }
 
-        public void getElement(string category, string name, float value){
+        public float getElement(string category, string name, float defaultValue){
             string valueSpot = " " + category + " : " + name + " : ";
-            ReadLine(valueSpot + value);
+            string wantedLine = null;
+
+            foreach(string line in textData){
+                if(line.Contains(valueSpot)){
+                    wantedLine = line;
+                }
+            }
+
+            if(wantedLine != null){
+                string dataString = wantedLine.Substring(valueSpot.Length - 1);
+                Debug.Log(dataString);
+                return float.Parse(dataString);
+            }
+            
+            return defaultValue;
         }
     }
 }
